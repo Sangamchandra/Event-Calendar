@@ -1,0 +1,187 @@
+body.light {
+    --bg: #ffffff;
+    --text: #000000;
+}
+
+body.dark {
+    --bg: #121212;
+    --text: #f1f1f1;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.App {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* Calendar Container */
+.calendar-container {
+    height: calc(100vh - 160px);
+    /* adjust based on actual header height */
+    overflow: hidden;
+    max-width: 100%;
+}
+
+.rbc-calendar {
+    height: 100% !important;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* Drag-and-Drop Styling */
+.rbc-event {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.rbc-event.dragging {
+    transform: scale(1.03);
+    opacity: 0.7;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Search/Select Inputs */
+input[type='text'],
+select {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 8px;
+    margin-bottom: 10px;
+    width: 100%;
+    background-color: var(--bg);
+    color: var(--text);
+}
+
+/* Modal Styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--bg);
+    color: var(--text);
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 90%;
+}
+
+/* Event Color Preview */
+.color-box {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Calendar toolbar button alignment */
+.rbc-toolbar button {
+    padding: 6px 10px;
+    margin: 0 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid #888;
+}
+
+.rbc-toolbar button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.4);
+}
+
+/* Responsive Fix */
+@media screen and (max-width: 768px) {
+    .calendar-container {
+        height: calc(100vh - 220px);
+    }
+
+    .rbc-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Calendar title alignment */
+.rbc-toolbar-label {
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 0.25rem;
+}
+
+.rbc-month-view {
+    background-color: var(--bg);
+}
+
+.rbc-month-row {
+    border-bottom: 1px solid #444;
+}
+
+.rbc-date-cell {
+    color: var(--text);
+    /* dates */
+}
+
+.rbc-off-range {
+    color: #888;
+    /* faded grey for other months */
+}
+
+.rbc-today {
+    background-color: #1e1e1e !important;
+    /* highlight today cell */
+    color: var(--text);
+}
+
+/* Toolbar button fix */
+.rbc-toolbar button {
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid #555;
+    padding: 6px 12px;
+}
+
+.rbc-toolbar button.rbc-active {
+    background-color: #3174ad;
+    color: #fff;
+}
+
+.rbc-event {
+    border: none !important;
+}
+
+/* Improve off-range date cell background in dark mode */
+body.dark .rbc-day-bg.rbc-off-range-bg {
+    background-color: #1a1a1a !important;
+    /* deep gray */
+}
+
+body.dark .rbc-off-range {
+    color: #666 !important;
+    /* faded text */
+}
+
+/* Optional: soften grid borders in dark mode */
+body.dark .rbc-month-row {
+    border-bottom: 1px solid #333;
+}

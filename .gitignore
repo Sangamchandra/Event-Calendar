@@ -5,6 +5,15 @@
 /.pnp
 .pnp.js
 
+
+node_modules
+.env
+build
+dist
+.DS_Store
+*.log
+
+
 # testing
 /coverage
 
