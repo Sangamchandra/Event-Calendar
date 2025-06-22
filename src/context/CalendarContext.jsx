@@ -20,14 +20,12 @@ const calendarReducer = (state, action) => {
     }
     case "UPDATE_EVENT": {
       const updatedEvent = { ...action.payload };
-      // Remove all existing recurrence instances
       const filteredEvents = state.events.filter(
         (ev) =>
           ev.recurrenceId !== updatedEvent.recurrenceId &&
           ev.id !== updatedEvent.id,
       );
 
-      // Expand updated recurrence
       const expanded = expandRecurringEvents(updatedEvent);
       return {
         ...state,

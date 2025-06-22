@@ -1,4 +1,3 @@
-// DnDCalendar.jsx
 import React from "react";
 import moment from "moment";
 import { DndProvider } from "react-dnd";
