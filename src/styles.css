@@ -1,17 +1,27 @@
+:root {
+    --light-bg: #ffffff;
+    --light-text: #000000;
+    --dark-bg: #121212;
+    --dark-text: #f1f1f1;
+    --today-highlight: rgba(49, 116, 173, 0.2);
+    --hover-bg: rgba(49, 116, 173, 0.15);
+}
+
 body.light {
-    --bg: #ffffff;
-    --text: #000000;
+    --bg: var(--light-bg);
+    --text: var(--light-text);
 }
 
 body.dark {
-    --bg: #121212;
-    --text: #f1f1f1;
+    --bg: var(--dark-bg);
+    --text: var(--dark-text);
 }
 
 body {
     margin: 0;
     background-color: var(--bg);
     color: var(--text);
+    font-family: sans-serif;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -36,18 +46,90 @@ body {
     color: var(--text);
 }
 
+.rbc-month-view {
+    background-color: var(--bg);
+    border: none;
+}
+
+.rbc-month-row {
+    border-bottom: 1px solid #444;
+}
+
+.rbc-date-cell {
+    color: var(--text);
+    transition: background-color 0.2s ease;
+}
+
+.rbc-date-cell:hover {
+    background-color: var(--hover-bg);
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.rbc-off-range {
+    color: #888;
+}
+
+body.dark .rbc-off-range {
+    color: #666;
+}
+
+.rbc-today {
+    background-color: var(--today-highlight) !important;
+}
+
 .rbc-event {
+    background-color: #3174ad !important;
+    color: white !important;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    border: none !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .rbc-event.dragging {
-    transform: scale(1.03);
+    transform: scale(1.05);
     opacity: 0.7;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.rbc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.rbc-toolbar-label {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.rbc-toolbar button {
+    background-color: var(--bg);
+    color: var(--text);
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.rbc-toolbar button:hover {
+    background-color: var(--hover-bg);
+}
+
+.rbc-toolbar button.rbc-active {
+    background-color: #3174ad;
+    color: white;
 }
 
 input[type='text'],
-select {
+select,
+textarea,
+input[type='datetime-local'] {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 8px;
@@ -61,13 +143,13 @@ select {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000;
+    z-index: 9998;
 }
 
 .modal-content {
@@ -75,8 +157,16 @@ select {
     color: var(--text);
     padding: 20px;
     border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     max-width: 500px;
     width: 90%;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    background-color: var(--bg);
+    color: var(--text);
 }
 
 .color-box {
@@ -88,83 +178,342 @@ select {
     vertical-align: middle;
 }
 
-.rbc-toolbar button {
-    padding: 6px 10px;
-    margin: 0 4px;
-    border-radius: 6px;
-    cursor: pointer;
+.event-form-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: var(--bg);
     color: var(--text);
-    border: 1px solid #888;
-}
-
-.rbc-toolbar button:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.4);
-}
-
-@media screen and (max-width: 768px) {
-    .calendar-container {
-        height: calc(100vh - 220px);
-    }
-
-    .rbc-toolbar {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-}
-
-.rbc-toolbar-label {
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding: 0.25rem;
-}
-
-.rbc-month-view {
-    background-color: var(--bg);
-}
-
-.rbc-month-row {
-    border-bottom: 1px solid #444;
-}
-
-.rbc-date-cell {
-    color: var(--text);
-}
-
-.rbc-off-range {
-    color: #888;
-}
-
-.rbc-today {
-    background-color: #1e1e1e !important;
-    color: var(--text);
-}
-
-.rbc-toolbar button {
-    background-color: var(--bg);
-    color: var(--text);
-    border: 1px solid #555;
-    padding: 6px 12px;
-}
-
-.rbc-toolbar button.rbc-active {
-    background-color: #3174ad;
-    color: #fff;
-}
-
-.rbc-event {
-    border: none !important;
+    border-radius: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+    padding: 20px;
+    z-index: 9999;
+    max-width: 400px;
+    width: 90%;
 }
 
 body.dark .rbc-day-bg.rbc-off-range-bg {
     background-color: #1a1a1a !important;
 }
 
-body.dark .rbc-off-range {
-    color: #666 !important;
-}
-
 body.dark .rbc-month-row {
     border-bottom: 1px solid #333;
+}
+
+/* Hover effect for calendar day cells */
+.rbc-month-view .rbc-day-bg:hover {
+    background-color: rgba(49, 116, 173, 0.12);
+    /* Light blue overlay on hover */
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+/* Optional: Click/active feedback */
+.rbc-month-view .rbc-day-bg:active {
+    background-color: rgba(49, 116, 173, 0.2);
+}
+
+/* Dark mode support for hover */
+body.dark .rbc-month-view .rbc-day-bg:hover {
+    background-color: rgba(255, 255, 255, 0.06);
+    /* Subtle white for dark mode */
+}
+
+/* Optional: active state in dark mode */
+body.dark .rbc-month-view .rbc-day-bg:active {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.event-form-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg, #fff);
+    color: var(--text, #000);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    z-index: 10000;
+    max-width: 480px;
+    width: 95%;
+    transition: all 0.3s ease;
+}
+
+body.dark .event-form-modal {
+    background-color: #1f1f1f;
+    color: #f5f5f5;
+}
+
+.event-form-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.event-form-modal label {
+    display: block;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+    margin-bottom: 0.3rem;
+}
+
+.event-form-modal input[type="text"],
+.event-form-modal input[type="datetime-local"],
+.event-form-modal textarea,
+.event-form-modal select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+    background-color: var(--bg);
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.dark .event-form-modal input,
+body.dark .event-form-modal select,
+body.dark .event-form-modal textarea {
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    color: #f5f5f5;
+}
+
+.event-form-modal input:focus,
+.event-form-modal select:focus,
+.event-form-modal textarea:focus {
+    border-color: #3174ad;
+    box-shadow: 0 0 0 2px rgba(49, 116, 173, 0.3);
+    outline: none;
+}
+
+.event-form-modal .form-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.event-form-modal .form-row input[type="text"] {
+    flex: 1;
+}
+
+.event-form-modal .button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    gap: 10px;
+}
+
+.event-form-modal button {
+    padding: 10px 16px;
+    font-size: 0.95rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.event-form-modal button:hover {
+    transform: scale(1.03);
+}
+
+.event-form-modal .add-btn {
+    background-color: #3174ad;
+    color: #fff;
+}
+
+.event-form-modal .add-btn:hover {
+    background-color: #27639c;
+}
+
+.event-form-modal .cancel-btn {
+    background-color: #888;
+    color: #fff;
+}
+
+.event-form-modal .cancel-btn:hover {
+    background-color: #666;
+}
+
+.event-form-modal input[type="color"] {
+    height: 40px;
+    width: 60px;
+    padding: 0;
+    border-radius: 6px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+/* 🎨 You can also define these CSS varia/.add-btn:hover for light and dark modes at the top of your stylesheet: */
+
+body.light {
+    --bg: #ffffff;
+    --text: #121212;
+}
+
+body.dark {
+    --bg: #121212;
+    --text: #f5f5f5;
+}
+
+.event-form-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--bg, #fff);
+    color: var(--text, #000);
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.25);
+    z-index: 10000;
+    max-width: 550px;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+body.dark .event-form-modal {
+    background-color: #1e1e1e;
+    color: #f5f5f5;
+}
+
+.event-form-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.event-form-modal label {
+    display: block;
+    font-size: 0.95rem;
+    margin: 1rem 0 0.3rem;
+}
+
+.event-form-modal input[type="text"],
+.event-form-modal input[type="datetime-local"],
+.event-form-modal textarea,
+.event-form-modal select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    background-color: var(--bg);
+    color: var(--text);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+body.dark .event-form-modal input,
+body.dark .event-form-modal select,
+body.dark .event-form-modal textarea {
+    background-color: #2b2b2b;
+    border: 1px solid #444;
+    color: #f5f5f5;
+}
+
+.event-form-modal input:focus,
+.event-form-modal select:focus,
+.event-form-modal textarea:focus {
+    border-color: #3174ad;
+    box-shadow: 0 0 0 2px rgba(49, 116, 173, 0.3);
+    outline: none;
+}
+
+.event-form-modal .form-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.event-form-modal .form-row input[type="text"] {
+    flex: 1;
+}
+
+.event-form-modal .button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 2rem;
+    gap: 12px;
+}
+
+.event-form-modal button {
+    padding: 10px 18px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.event-form-modal button:hover {
+    transform: scale(1.03);
+}
+
+.event-form-modal .add-btn {
+    background-color: #3174ad;
+    color: #fff;
+}
+
+.event-form-modal .add-btn:hover {
+    background-color: #27639c;
+}
+
+.event-form-modal .cancel-btn {
+    background-color: #999;
+    color: #fff;
+}
+
+.event-form-modal .cancel-btn:hover {
+    background-color: #777;
+}
+
+.event-form-modal input[type="color"] {
+    height: 42px;
+    width: 64px;
+    padding: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #aaa;
+}
+
+/* Button container */
+.event-form-modal .button-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+/* Button base style */
+.event-form-modal button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    min-width: 120px;
+}
+
+/* Add Event Button */
+.event-form-modal .add-btn {
+    background-color: #3174ad;
+    color: #fff;
+}
+
+.event-form-modal .add-btn:hover {
+    background-color: #27639c;
+}
+
+/* Cancel Button */
+.event-form-modal .cancel-btn {
+    background-color: #999;
+    color: #fff;
+}
+
+.event-form-modal .cancel-btn:hover {
+    background-color: #777;
 }

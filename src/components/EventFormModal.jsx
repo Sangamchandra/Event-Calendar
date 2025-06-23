@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { CalendarContext } from "../context/CalendarContext";
+import "../styles.css";
 
 const EventFormModal = ({ event, onClose }) => {
   const isEdit = !!event?.id;
@@ -13,6 +14,7 @@ const EventFormModal = ({ event, onClose }) => {
     color: "#3174ad",
     category: "",
   });
+
   const { dispatch } = useContext(CalendarContext);
 
   useEffect(() => {
@@ -80,83 +82,103 @@ const EventFormModal = ({ event, onClose }) => {
   };
 
   return (
-    <div className="modal">
-      <form onSubmit={handleSubmit} className="modal-form">
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Event Title"
-          required
-        />
-        <input
-          name="start"
-          type="datetime-local"
-          value={form.start}
-          onChange={handleChange}
-          required
-        />
-        <input
-          name="end"
-          type="datetime-local"
-          value={form.end}
-          onChange={handleChange}
-          required
-        />
-        <textarea
-          name="desc"
-          value={form.desc}
-          onChange={handleChange}
-          placeholder="Description"
-        />
-        <label>Recurrence:</label>
-        <select
-          name="recurrence"
-          value={form.recurrence}
-          onChange={handleChange}
-        >
-          <option value="none">None</option>
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="monthly">Monthly</option>
-        </select>
-        {form.recurrence !== "none" && (
+    <>
+      <div className="modal-overlay" onClick={onClose}></div>
+      <div className="event-form-modal">
+        <h3 style={{ marginBottom: "12px" }}>
+          {isEdit ? "Edit Event" : "Add Event"}
+        </h3>
+        <form onSubmit={handleSubmit} className="event-form">
+          <label>Title</label>
           <input
-            type="number"
-            name="repeatInterval"
-            min="1"
-            value={form.repeatInterval}
+            name="title"
+            value={form.title}
             onChange={handleChange}
-            placeholder="Repeat Interval"
+            placeholder="Event Title"
+            required
           />
-        )}
-        <label>Category:</label>
-        <input
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          placeholder="Category"
-        />
-        <label>Event Color:</label>
-        <input
-          type="color"
-          name="color"
-          value={form.color}
-          onChange={handleChange}
-        />
-        <div className="modal-buttons">
-          <button type="submit">{isEdit ? "Update" : "Add"} Event</button>
-          {isEdit && (
-            <button type="button" onClick={handleDelete}>
-              Delete
-            </button>
+
+          <label>Start</label>
+          <input
+            name="start"
+            type="datetime-local"
+            value={form.start}
+            onChange={handleChange}
+            required
+          />
+
+          <label>End</label>
+          <input
+            name="end"
+            type="datetime-local"
+            value={form.end}
+            onChange={handleChange}
+            required
+          />
+
+          <label>Description</label>
+          <textarea
+            name="desc"
+            value={form.desc}
+            onChange={handleChange}
+            placeholder="Description"
+          />
+
+          <label>Recurrence</label>
+          <select
+            name="recurrence"
+            value={form.recurrence}
+            onChange={handleChange}
+          >
+            <option value="none">None</option>
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+
+          {form.recurrence !== "none" && (
+            <>
+              <label>Repeat Every</label>
+              <input
+                type="number"
+                name="repeatInterval"
+                min="1"
+                value={form.repeatInterval}
+                onChange={handleChange}
+              />
+            </>
           )}
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
-        </div>
-      </form>
-    </div>
+
+          <label>Category</label>
+          <input
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            placeholder="Category"
+          />
+
+          <label>Event Color</label>
+          <input
+            type="color"
+            name="color"
+            value={form.color}
+            onChange={handleChange}
+          />
+
+          <div className="form-actions">
+            <button type="submit">{isEdit ? "Update" : "Add"} Event</button>
+            {isEdit && (
+              <button type="button" onClick={handleDelete}>
+                Delete
+              </button>
+            )}
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 
